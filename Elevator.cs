@@ -23,7 +23,6 @@ namespace ElevatorModeling
         {
             if (currentFloor < floors)
             {
-                Thread.Sleep(1000);
                 currentFloor += 1;
             }
         }
@@ -32,7 +31,6 @@ namespace ElevatorModeling
         {
             if (currentFloor > 1)
             {
-                Thread.Sleep(1000);
                 currentFloor -= 1;
             }
         }
@@ -42,7 +40,6 @@ namespace ElevatorModeling
             {
                 if (person.ArrivalFLoor == currentFloor)
                 {
-                    Thread.Sleep(1000);
                     elevatorParty.Remove(person);
                 }
             }
@@ -52,10 +49,16 @@ namespace ElevatorModeling
         {
             if (elevatorParty.Count < capacity)
             {
-                Thread.Sleep(1000);
                 elevatorParty.Add(person);
             }
         }
+    }
+
+    public enum ElevatorState
+    {
+        Waiting,
+        GoingUp,
+        GoingDown
     }
     
 }

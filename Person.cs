@@ -6,16 +6,17 @@ namespace ElevatorModeling
 {
     public class Person
     {
-        private int _departureFloor;
-        private int _arrivalFloor;
+        private int departureFloor;
+        private int arrivalFloor;
+        
 
-        public int DepartureFloor => _departureFloor;
-        public int ArrivalFLoor => _arrivalFloor;
+        public int DepartureFloor => departureFloor;
+        public int ArrivalFLoor => arrivalFloor;
 
         public Person(int departureFloor, int arrivalFloor)
         {
-            _departureFloor = departureFloor;
-            _arrivalFloor = arrivalFloor;
+            this.departureFloor = departureFloor;
+            this.arrivalFloor = arrivalFloor;
         }
 
     }
