@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 
@@ -7,58 +8,95 @@ namespace ElevatorModeling
 {
     public class Elevator
     {
-        private int capacity;
-        private int floors;
-        private int currentFloor = 1;
+        private readonly int _capacity;
+        private readonly List<Person> _persons = new List<Person>();
 
-        public List<Person> elevatorParty = new List<Person>();
+        public int Floors { get; }
+        public int CurrentFloor { get; private set; } = 1;
+        public bool IsFull => _persons.Count == _capacity;
+        public Direction Direction { get; set; } = Direction.Up;
+
 
         public Elevator(int capacity, int floors)
         {
-            this.capacity = capacity;
-            this.floors = floors;
+            _capacity = capacity;
+            Floors = floors;
         }
 
-        public void GoUp()
+        public void Go()
         {
-            if (currentFloor < floors)
+            switch (Direction)
             {
-                currentFloor += 1;
+                case Direction.Up:
+                    if (CurrentFloor < Floors)
+                    {
+                        if (++CurrentFloor == Floors)
+                        {
+                            Direction = Direction.Down;
+                        }
+                    }
+                    break;
+                case Direction.Down:
+                    if (CurrentFloor > 1)
+                    {
+                        if (--CurrentFloor == 1)
+                        {
+                            Direction = Direction.Up;
+                        }
+                    }
+                    break;
+                default:
+                    break;
             }
         }
 
-        public void GoDown()
+        public bool TryDislodge()
         {
-            if (currentFloor > 1)
+            var dislodged = _persons.FirstOrDefault(p => p.ArrivalFLoor == CurrentFloor);
+
+            if (dislodged == null)
             {
-                currentFloor -= 1;
+                return false;
             }
-        }
-        public void Dislodge()
-        {
-            foreach (var person in elevatorParty)
-            {
-                if (person.ArrivalFLoor == currentFloor)
-                {
-                    elevatorParty.Remove(person);
-                }
-            }
+
+            _persons.Remove(dislodged);
+
+            return true;
         }
 
-        public void AddPerson(Person person)
+        public bool TryAddPerson(Person person)
         {
-            if (elevatorParty.Count < capacity)
+            if (_persons.Count < _capacity)
             {
-                elevatorParty.Add(person);
+                _persons.Add(person);
+                return true;
             }
+
+            return false;
+
         }
+
+        public string Draw()
+        {
+            var sb = new StringBuilder("[ ");
+
+            foreach(var person in _persons)
+            {
+                sb.Append(person.ArrivalFLoor).Append(" ");
+            }
+
+            for (int i = 0; i < _capacity - _persons.Count; i++)
+            {
+                sb.Append("* ");
+            }
+
+            sb.Append("]");
+
+            return sb.ToString();
+        }
+
     }
 
-    public enum ElevatorState
-    {
-        Waiting,
-        GoingUp,
-        GoingDown
-    }
     
+
 }
