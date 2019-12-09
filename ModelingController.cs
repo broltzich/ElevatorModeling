@@ -9,7 +9,7 @@ namespace ElevatorModeling
     {
         private readonly Elevator _elevator;
         private readonly List<Queue<Person>> _queueList = new List<Queue<Person>>();
-        private int[] _delivered;
+        private readonly int[] _delivered;
         private int _total;
         private int _currentWaiting;
 
@@ -73,24 +73,6 @@ namespace ElevatorModeling
             return sb.ToString();
         }
 
-        private void GeneratePerson()
-        {
-            var rnd = new Random(DateTime.Now.Millisecond);
-            if (rnd.Next(100)  < 40)                                                                            // kind of chance that person will be generated ;
-            {
-                var departure = rnd.Next(1, _elevator.Floors + 1);
-                var arrival = departure;
-
-                while (departure == arrival)
-                {
-                    arrival = rnd.Next(1, _elevator.Floors + 1);
-                }
-
-                var generatedPerson = new Person(departure, arrival);
-                _queueList[generatedPerson.DepartureFloor - 1].Enqueue(generatedPerson);
-                _currentWaiting++;
-            }
-        }
 
         private bool TryBoardPerson()
         {
@@ -109,6 +91,25 @@ namespace ElevatorModeling
                 return true;
             }
             return false;
+        }
+
+        private void GeneratePerson()
+        {
+            var rnd = new Random(DateTime.Now.Millisecond);
+            if (rnd.Next(100)  < 40)                                                                                // probability of person will be generated;
+            {
+                var departure = rnd.Next(1, _elevator.Floors + 1);
+                var arrival = departure;
+
+                while (departure == arrival)
+                {
+                    arrival = rnd.Next(1, _elevator.Floors + 1);
+                }
+
+                var generatedPerson = new Person(departure, arrival);
+                _queueList[generatedPerson.DepartureFloor - 1].Enqueue(generatedPerson);
+                _currentWaiting++;
+            }
         }
     }
 

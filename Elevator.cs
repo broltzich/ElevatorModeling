@@ -13,7 +13,7 @@ namespace ElevatorModeling
 
         public int Floors { get; }
         public int CurrentFloor { get; private set; } = 1;
-        public bool IsFull => _persons.Count == _capacity;
+        //public bool IsFull => _persons.Count == _capacity;
         public Direction Direction { get; set; } = Direction.Up;
 
 
@@ -36,6 +36,7 @@ namespace ElevatorModeling
                         }
                     }
                     break;
+
                 case Direction.Down:
                     if (CurrentFloor > 1)
                     {
@@ -45,6 +46,7 @@ namespace ElevatorModeling
                         }
                     }
                     break;
+
                 default:
                     break;
             }
